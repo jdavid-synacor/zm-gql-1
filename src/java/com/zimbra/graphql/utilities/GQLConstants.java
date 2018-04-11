@@ -22,6 +22,9 @@ public class GQLConstants {
     public static final String ERROR_INVALID_ZM_AUTH_CODE_MSG = "Invalid or missing Zimbra session.";
     public static final String ERROR_AUTHENTICATION_ERROR = "authentication_error";
 
+    // data fetching error related
+    public static final String ERROR_RESOURCE_NOT_FOUND_MSG = "The resource was not found.";
+
     // LC Related
     public static final String LC_REPOSITORY_CLASS_PREFIX = "";
     public static final String LC_GQL_SERVER_CONTEXT_PATH = "gql_server_context_path";

@@ -50,8 +50,7 @@ public class ZXMLMessageRepository extends ZXMLItemRepository implements IReposi
      * Creates an instance with default document handlers.
      */
     public ZXMLMessageRepository() {
-        super(new MsgAction());
-        getMessageHandler = new GetMsg();
+        this(new MsgAction(), new GetMsg());
     }
 
     /**

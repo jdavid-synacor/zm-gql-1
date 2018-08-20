@@ -21,8 +21,11 @@ import com.zimbra.graphql.models.RequestContext;
 import com.zimbra.graphql.repositories.impl.ZXMLMessageRepository;
 import com.zimbra.soap.mail.type.Msg;
 import com.zimbra.soap.mail.type.MsgSpec;
+import com.zimbra.soap.mail.type.MsgToSend;
+import com.zimbra.soap.mail.type.MsgWithGroupInfo;
 
 import io.leangen.graphql.annotations.GraphQLArgument;
+import io.leangen.graphql.annotations.GraphQLMutation;
 import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.annotations.GraphQLRootContext;
 
@@ -47,28 +50,23 @@ public class MessageResolver {
         this.messageRepository = messageRepository;
     }
 
-    @GraphQLQuery(description = "Retrieve a message by given properties.")
+    @GraphQLQuery(description="Retrieve a message by given properties.")
     public Msg message(
-        @GraphQLArgument(name = "messageSpecification") MsgSpec messageSpecifications,
+        @GraphQLArgument(name="messageSpecification") MsgSpec messageSpecifications,
         @GraphQLRootContext RequestContext context) throws ServiceException {
-       return messageRepository.getMessage(context, messageSpecifications);
+       return messageRepository.message(context, messageSpecifications);
+    }
+
+    @GraphQLMutation(description = "Send a message with given input.")
+    public MsgWithGroupInfo messageSend(
+        @GraphQLArgument(name = "addSentBy", description = "Denotes whether to add sent-by parameter when sending on behalf of someone.") Boolean addSentBy,
+        @GraphQLArgument(name = "isCalendarForward", description = "Denotes whether this a forward of calendar invitation.") Boolean isCalendarForward,
+        @GraphQLArgument(name = "doSkipSave", description = "Denotes whether to skip saving a copy (regardless of account/identity settings).") Boolean doSkipSave,
+        @GraphQLArgument(name = "doFetchSaved", description = "Denotes whether to return a copy of sent message, if it was saved.") Boolean doFetchSaved,
+        @GraphQLArgument(name = "sendUid", description = "Send UID.") String sendUid,
+        @GraphQLArgument(name = "message", description = "The message to send.") MsgToSend message,
+        @GraphQLRootContext RequestContext context) throws ServiceException {
+        return messageRepository.messageSend(context, addSentBy, isCalendarForward, doSkipSave,
+            doFetchSaved, sendUid, message);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
